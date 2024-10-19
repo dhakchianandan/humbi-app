@@ -1,4 +1,4 @@
-import { json, Outlet, useLoaderData } from '@remix-run/react';
+import { Form, json, Link, Outlet, useLoaderData } from '@remix-run/react';
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -6,6 +6,7 @@ import {
 } from '@remix-run/node';
 
 import { auth } from '~/auth';
+import prisma from '~/db.server';
 import Chats from '~/components/chats';
 import { SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
@@ -18,7 +19,22 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (session) {
     const { user } = session;
 
-    return json({ user });
+    const chats = await prisma.chat.findMany({
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      where: {
+        userId: user.id,
+        deletedAt: null,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return json({ user, chats });
   }
 
   return redirect('/');
@@ -41,24 +57,31 @@ export default function Dashboard() {
 
   return (
     <main>
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={true}>
         <Chats />
         <div className="w-full flex flex-col">
-          <header className="flex justify-between items-center">
+          <header className="w-full bg-gray-50 flex justify-between items-center sticky top-0">
             <div className="flex gap-2 items-center">
               <SidebarTrigger />
               <h1 className="font-bold font-serif">Humbi</h1>
             </div>
 
-            <Avatar className="p-1">
-              <AvatarImage src={user.image} />
-              <AvatarFallback className="bg-gray-200 uppercase font-bold">
-                {user.name?.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
+            <div className="flex gap-2 items-center">
+              <Form method="post" action="/chats?index">
+                <button className="font-bold font-serif text-sm underline">
+                  + New Chat
+                </button>
+              </Form>
+              <Avatar className="p-1">
+                <AvatarImage src={user.image} />
+                <AvatarFallback className="bg-gray-200 uppercase font-bold">
+                  {user.name?.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+            </div>
           </header>
 
-          <div className="p-1 h-full">
+          <div className="h-full flex-1">
             <Outlet />
           </div>
         </div>

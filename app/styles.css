@@ -88,7 +88,11 @@ main {
 }
 
 main {
-  @apply p-2;
+  /* @apply p-2; */
+}
+
+a.active {
+  @apply bg-gray-200;
 }
 
 .lucide-panel-left {

@@ -17,6 +17,7 @@ model User {
   updatedAt     DateTime
   Session       Session[]
   Account       Account[]
+  Chat          Chat[]
 
   @@unique([email])
   @@map("user")
@@ -55,4 +56,16 @@ model Verification {
   expiresAt  DateTime
 
   @@map("verification")
+}
+
+model Chat {
+  id        String    @id @default(cuid())
+  messages  String    @default("[]")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chat")
 }

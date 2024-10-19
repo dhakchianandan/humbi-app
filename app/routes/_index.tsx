@@ -16,7 +16,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <main className="flex flex-col justify-center items-center gap-2">
+    <main className="flex flex-col justify-center items-center gap-2 text-center">
       <h1 className="font-serif font-bold text-4xl">HUMBI LLM</h1>
       <h2>
         Interact with your databases in the most intuitive way—using natural
@@ -27,7 +27,7 @@ export default function Index() {
           e.preventDefault();
           await signIn.social({
             provider: 'google',
-            callbackURL: '/chats/new',
+            callbackURL: '/chats',
           });
         }}
       >
