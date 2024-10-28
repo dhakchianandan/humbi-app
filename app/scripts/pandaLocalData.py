@@ -3,10 +3,13 @@ import os
 import pandas as pd
 import pandasai
 from pandasai import SmartDatalake
+from flask_cors import CORS
 
 # import openai
 
 app = Flask(__name__)
+CORS(app)
+
 
 # os.environ["OPENAI_API_KEY"] = "sk-.."
 # openai.api_key = os.environ["OPENAI_API_KEY"]

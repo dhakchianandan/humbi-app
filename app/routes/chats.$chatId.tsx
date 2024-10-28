@@ -79,12 +79,12 @@ export async function action({ request }: ActionFunctionArgs) {
     if (!chat) {
       return redirect('/chats');
     }
-
+    // 'The dynamics of being in position (acting after your opponents) versus out of position (acting before your opponents) are magnified in short-handed games. Players must adapt by playing a wider range of hands, especially in later positions, and by being more aggressive to leverage the positional advantage.',
     const reply = {
       id: cuid(),
       role: 'assistant',
       type: 'generic',
-      text: 'The dynamics of being in position (acting after your opponents) versus out of position (acting before your opponents) are magnified in short-handed games. Players must adapt by playing a wider range of hands, especially in later positions, and by being more aggressive to leverage the positional advantage.',
+      text: (await getPandaResponse(query.toString())).toString,
       createdAt: new Date(),
       feedback: 0,
       // feedback: Math.floor(Math.random() * 3),
@@ -164,3 +164,21 @@ export default function Chat() {
     </div>
   );
 }
+
+async function getPandaResponse(rawText: string): Promise<string> {
+  try {
+    const response = await fetch(
+      'http://127.0.0.1:5000/get?msg=' + encodeURIComponent(rawText),
+    );
+    const data = await response.text(); // Adjust if the response is JSON
+    console.log('## here');
+    console.log(rawText);
+    console.log('' + data);
+    console.log('' + data.toString());
+    return data; // Return the data directly
+  } catch (error) {
+    console.error('Error fetching bot response:', error);
+    throw error; // Optionally re-throw the error for further handling
+  }
+}
+
