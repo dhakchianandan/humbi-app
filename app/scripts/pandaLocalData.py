@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 import os
 import pandas as pd
 import pandasai
-from pandasai import PandasAI
 from pandasai import SmartDatalake
 
 # import openai
@@ -20,7 +19,7 @@ employees_data = {
 
 salaries_data = {
     'EmployeeID': [1, 2, 3, 4, 5],
-    'Salary': [5000, 6000, 4500, 7000, 5500]
+    'Salary': [5000, 6000, 4500, 7000, 55400]
 }
 
 

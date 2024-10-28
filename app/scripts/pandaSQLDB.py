@@ -3,7 +3,6 @@ import os
 import pandas as pd
 import pandasai
 from pandasai import Agent
-from pandasai import PandasAI
 # import openai
 from sqlalchemy import create_engine
 
