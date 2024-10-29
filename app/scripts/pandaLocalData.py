@@ -34,8 +34,8 @@ salaries_df = pd.DataFrame(salaries_data)
 os.environ["PANDASAI_API_KEY"] = "$2a$10$O8Genp9/P./8XZhkLJwB.eTOuvmdoMsj/y4cVCdmJcNDDYVd.EhDG"
 
 lake = SmartDatalake([employees_df, salaries_df])
-response = lake.chat("Who gets paid the most?")
-print(response)
+# response = lake.chat("Who gets paid the most?")
+# print(response)
 # Output: Olivia gets paid the most
 
 @app.route("/get")
@@ -44,4 +44,7 @@ def get_bot_response():
     print("userText : " + userText)
     response = lake.chat(userText)
     print("response : " + response)
+    return response
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5020)  # This allows access from all interfaces
